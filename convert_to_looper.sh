@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # Check if the correct number of arguments is provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 input_directory"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 input_directory song_name"
     exit 1
 fi
 
 # Directory containing the input files
 input_dir="$1"
+# Song name
+song_name="$2"
 # Directory to save the output files
 output_dir="LOOP"
 
@@ -107,6 +109,14 @@ Last Play:
   REVERSE= Off  (Off or On)
   You can use Notepad to edit this file when importing track files. In that case put value in Record Tempo but leave TEMPO POT value blank.
 EOF
+
+# Create NAME.txt file with specified song name
+name_file="$output_dir/NAME.txt"
+cat <<EOF > "$name_file"
+$song_name
+EOF
+
+
 
 echo "TEMPO.txt created: $tempo_file"
 echo "Conversion completed."
