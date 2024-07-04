@@ -110,13 +110,8 @@ Last Play:
   You can use Notepad to edit this file when importing track files. In that case put value in Record Tempo but leave TEMPO POT value blank.
 EOF
 
-# Create NAME.txt file with specified song name
-name_file="$output_dir/NAME.txt"
-cat <<EOF > "$name_file"
-$song_name
-EOF
-
-
+#Create name file
+name.sh $output_dir $song_name
 
 echo "TEMPO.txt created: $tempo_file"
 echo "Conversion completed."
