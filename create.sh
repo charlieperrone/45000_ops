@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Check if the correct number of arguments is provided
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 input_directory song_name"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 input_directory output_directory song_name"
     exit 1
 fi
 
 # Directory containing the input files
 input_dir="$1"
-# Song name
-song_name="$2"
 # Directory to save the output files
-output_dir="LOOP"
+output_dir="$2"
+# Song name
+song_name="$3"
 
 # Function to clear contents of a directory
 clear_directory() {
