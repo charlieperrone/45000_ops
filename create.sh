@@ -83,6 +83,8 @@ esac
 
 # Initialize a counter for output files
 track_counter=1
+# Initialize empty array for file tracker
+declare file_tracker=()
 
 # Loop through all wav files in the input directory
 for input_file in "${wav_files[@]}"; do
@@ -94,6 +96,15 @@ for input_file in "${wav_files[@]}"; do
     
     # Increment the track counter
     track_counter=$((track_counter + 1))
+
+    # Use jq to create the JSON string
+    json_string=$(jq -n --arg track_counter "$track_counter" --argjson input_file "$input_file" \
+        '{number: $track_counter, input_file: $input_file}')
+
+    file_tracker+=('{
+        "number": "$track_counter", 
+        "name": "$input_file"
+    }')
 done
 
 # Create TEMPO.txt file with specified contents
@@ -111,7 +122,11 @@ Last Play:
 EOF
 
 #Create name file
-name.sh $output_dir $song_name
+echo "Creating name file"
+echo $output_dir
+echo $file_tracker
+echo $song_name
+name.sh $output_dir "$file_tracker" $song_name 
 
 echo "TEMPO.txt created: $tempo_file"
 echo "Conversion completed."
