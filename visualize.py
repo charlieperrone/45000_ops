@@ -9,7 +9,8 @@ parent_directory = "/Volumes/LIVESTRANGE"
 song_array = []
 
 def traverse(func, data):
-    for folder in os.listdir(parent_directory):
+    folders = sorted(os.listdir(parent_directory))
+    for folder in folders:
         folder_path = os.path.join(parent_directory, folder)
         if os.path.isdir(folder_path):
             # Check if the folder contains NAME.json
