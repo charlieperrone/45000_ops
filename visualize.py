@@ -38,15 +38,59 @@ def render_tracks(data, folder_path, desired_song_name):
     
     # Check if song_name matches the desired song_name
     if song_name == desired_song_name:
-        print(f"{os.path.basename(folder_path)}:")
+        # save the loop number
+        loop_number = os.path.basename(folder_path)
+        # create track content array
+        track_names = []
+
+        # loop through all tracks and display
         for track in tracks:
-            track_number = track.get("number")
             track_name = track.get("name")
-            print(f"Track {track_number}: {track_name}")
-        print()  # Empty line for separation if needed
+            track_names.append(track_name)
+        print(f"| {loop_number} {track_names}")
+
+def create_rounded_corner_table(headers, rows):
+    # Calculate column widths
+    col_widths = [max(len(str(item)) for item in column) for column in zip(headers, *rows)]
+    
+    # Create the top border
+    # top_border = '╭' + '┬'.join('─' * (width + 2) for width in col_widths) + '╮'
+    
+    # Create the header row
+    header_row = '╭' + '-'.join(headers)
+    
+    # Create the separator between header and rows
+    separator = '│'
+    
+    # Create the bottom border
+    bottom_border = '╰' + '──────────'
+    
+    # Create all data rows
+    data_rows = []
+    for row in rows:
+        data_row = '│ ' + ' │ '.join(row)
+        data_rows.append(data_row)
+    
+    # Combine all parts into the final table
+    table = [header_row, separator] + data_rows + [bottom_border]
+    return '\n'.join(table)
+
+headers = ["[PERSONAL]"]
+rows = [
+    ["01 PERSONAL COMPUTER MARKET Embroidered Black T-Shirt"],
+    ["02 PERSONAL COMPUTER MARKET Puff Print Navy Hoodie"],
+    ["03 Being Harsh/Acid Angel T-Shirt (Silver Edition)"]
+]
+
+print(create_rounded_corner_table(headers, rows))
+
 
 traverse(create_song_array, None)
 
 for song in song_array:
+    # print song title
     print(f'---[{song}]')
+    # print all of the relevant loops for each song
     traverse(render_tracks, song)
+    # print empty line
+    print()
