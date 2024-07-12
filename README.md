@@ -25,5 +25,4 @@ visualize.sh
 
 Dependencies
 
-Bash V4
-jq - json library for bash
+This is a python based project, with some bash scripting as well.
