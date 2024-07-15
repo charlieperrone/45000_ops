@@ -8,7 +8,7 @@ To do this requires alot of tedious folder management and precise operations. I 
 
 #### Create
 
-Creates a new looper directory with proper file formatting and directory structure.
+Creates a new looper directory with proper file formatting and directory structure. It also creates a file called NAME.json which gives information about the loop like the song name and the original filenames which gives more information about what is contained in each track.
 
 ```create.py input_directory output_directory song_name```
 
@@ -22,12 +22,19 @@ where create.py takes three arguments:
 
 Visualizes the entire looper directory and displays the relevant song and track structure for each loop
 
-```visualize.sh```
+```visualize.py```
 
 currently hardcoded to my personal drive, but could be configured to operate anywhere. Produces results in the following format:
 
 <img width="568" alt="Screen Shot 2024-07-15 at 12 57 38 PM" src="https://github.com/user-attachments/assets/999a6dc9-9b3c-4901-8e8e-1d74f7c64374">
 
+#### Swap
+
+Swaps the names of the two given files. Also reflects this change in the NAME.json file.
+
+```swap.py file1 file2```
+
+This function is useful for reorganizing a loop entry. Say you want all of your drums on TRACK1. This function can help you do that.
 
 ## Next Features
 
