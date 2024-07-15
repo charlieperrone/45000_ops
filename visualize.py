@@ -8,6 +8,9 @@ parent_directory = "/Volumes/LIVESTRANGE"
 # Song array keeps track of unique song names
 song_array = []
 
+def is_not_empty(n):
+    return n != []
+
 def traverse(func, data):
     # keep track of any returned data from func
     result = []
@@ -40,7 +43,7 @@ def create_song_array(data, _, song):
 def render_tracks(data, folder_path, desired_song_name):
     # Extract song_name and tracks from JSON data
     song_name = data.get("song_name")
-    tracks = data.get("tracks", [])
+    tracks = data.get("tracks", {})
     # instantiate result string
     result = []
     # Check if song_name matches the desired song_name
@@ -54,8 +57,7 @@ def render_tracks(data, folder_path, desired_song_name):
 
         # loop through all tracks and display
         for track in tracks:
-            track_name = track.get("name")
-            track_names.append(track_name)
+            track_names.append(track['name'])
 
         
         # format array into string
@@ -98,9 +100,6 @@ def create_rounded_corner_table(headers, rows):
     return '\n'.join(table)
 
 traverse(create_song_array, None)
-
-def is_not_empty(n):
-    return n != []
 
 for song in song_array:
     # build headers and rows

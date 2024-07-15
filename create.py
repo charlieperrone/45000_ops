@@ -62,15 +62,12 @@ def main(input_dir, output_dir, song_name):
         sys.exit(1)
 
     track_counter = 1
-    file_tracker = []
+    file_tracker = {}
 
     for input_file in wav_files:
         output_file = os.path.join(output_dir, f'TRACK{track_counter}.wav')
         subprocess.run(['ffmpeg', '-i', input_file, '-ac', '1', output_file])
-        file_tracker.append({
-            "number": track_counter,
-            "name": os.path.basename(input_file)
-        })
+        file_tracker[f'TRACK{track_counter}']=os.path.basename(input_file)
         track_counter += 1
 
     tempo_file = os.path.join(output_dir, 'TEMPO.txt')
