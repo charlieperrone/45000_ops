@@ -6,22 +6,32 @@ To do this requires alot of tedious folder management and precise operations. I 
 
 ### Functions
 
-#### Create a new looper directory with proper file formatting and directory structure.
+#### Create
 
-Usage: 
+Creates a new looper directory with proper file formatting and directory structure.
+
 ```create.py input_directory output_directory song_name```
+
+where create.py takes three arguments:
 
 - ```input_directory```  - specifies the files which will be used to create the loop directory
 - ```output_directory``` - specifies where the loop directory should be created
 - ```song_name```        - specifies what song this loop is associated with
 
-#### Visualize the entire looper directory and display the relevant song and track structure for each loop
+#### Visualize
 
-Usage: 
+Visualizes the entire looper directory and displays the relevant song and track structure for each loop
+
 ```visualize.sh```
+
+currently hardcoded to my personal drive, but could be configured to operate anywhere. Produces results in the following format:
+
+<img width="568" alt="Screen Shot 2024-07-15 at 12 57 38 PM" src="https://github.com/user-attachments/assets/999a6dc9-9b3c-4901-8e8e-1d74f7c64374">
+
 
 ## Next Features
 
 - Silencing or enabling the console output from ffmpeg
 - some tool to manage the naming and ordering of output files in the directory
 - improved batch processing that specifies a range of input and output files [raw1...raw2] [LOOP02...LOOP03]
+- implement a swap function that would be a rudimentary way to manipulate the ordering of tracks in a looper entry by swapping the positions of two specified loops
