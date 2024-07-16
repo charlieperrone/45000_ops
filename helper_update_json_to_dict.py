@@ -2,7 +2,8 @@
 """
 Module Name: help_update_json_to_dict.py
 
-This module provides a function to move a specific json structure to a specific dictionary structure.
+This module provides a function to move a specific json structure to a specific dictionary 
+structure.
 
 Author: Charlie Perrone
 
