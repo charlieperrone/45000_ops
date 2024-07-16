@@ -2,9 +2,7 @@
 
 The Electro Harmonix 45000 looper is a fabulous multitrack looper which allows a musician to record sounds into one of 4 tracks and mix them together. As a live looper, it works quite seamlessly for a user. One dimension of its use that I want to explore is as a 4 track playback device. I want to load the 45000 with stems and play them back for live performance, taking advantage of its performance functions, memory and immediacy.
 
-To do this requires alot of tedious folder management and precise operations. I would like to streamline this process by creating a set of tools that can spin up a properly formatted loop entries that can be put on an SD card and played back.
-
-### Functions
+To do this requires alot of tedious folder management and precise operations. To create a loop entry, there must be exactly 5 files present and they must be exactly the same length. Each file should be mono 16bit wav, except for the fifth which should be stereo 16 bit wav. The naming must also follow the pattern TRACK1...TRACK4, with the fifth stereo file being named TRACKM. There is also very little information available to a user regarding what is contained in a loop. Once they are created they are a bit of a black box. I would like to streamline the process of creating files in this format by making a set of tools that can spin up a properly formatted loop entry and will allow the user to perform visualization and management on existing entries. 
 
 #### Create
 
