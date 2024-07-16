@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
+"""Module providing functions that swap two given filepaths
+   and updates NAME.json data model accordingly."""
 
 import json
 import os
 import sys
 
-name_file = 'NAME.json'
+NAME_FILE = 'NAME.json'
 
-def swap_file_names(file1, file2):
+def swap_file_names(f1, f2):
+    """Function that swaps the names of two given filepaths."""
     # Check if both files exist
-    if not os.path.isfile(file1):
-        print(f"Error: {file1} does not exist.")
+    if not os.path.isfile(f1):
+        print(f"Error: {f1} does not exist.")
         return False
-    if not os.path.isfile(file2):
-        print(f"Error: {file2} does not exist.")
+    if not os.path.isfile(f2):
+        print(f"Error: {f2} does not exist.")
         return False
 
     # Get the directory names of the files
-    dir1 = os.path.dirname(file1)
-    dir2 = os.path.dirname(file2)
+    dir1 = os.path.dirname(f1)
+    dir2 = os.path.dirname(f2)
 
     # Create temporary file names
     temp_file1 = os.path.join(dir1, "temp_swap_file1")
@@ -25,27 +28,29 @@ def swap_file_names(file1, file2):
 
     try:
         # Rename the files to temporary names
-        os.rename(file1, temp_file1)
-        os.rename(file2, temp_file2)
-        
+        os.rename(f1, temp_file1)
+        os.rename(f2, temp_file2)
         # Swap the temporary file names
-        os.rename(temp_file1, file2)
-        os.rename(temp_file2, file1)
+        os.rename(temp_file1, f2)
+        os.rename(temp_file2, f1)
 
-        print(f"Swapped the files {file1} and {file2}")
+        print(f"Swapped the files {f1} and {f2}")
         return True
 
-    except Exception as e:
-        print(f"Error occurred during file swapping: {e}")
+    except FileNotFoundError as e:
+        print(f"File not found error: {e}")
+        return False
+    except OSError as e:
+        print(f"OS error occurred during file swapping: {e}")
         # Restore original names if swapping failed
         if os.path.isfile(temp_file1):
-            os.rename(temp_file1, file1)
+            os.rename(temp_file1, f1)
         if os.path.isfile(temp_file2):
-            os.rename(temp_file2, file2)
-        
+            os.rename(temp_file2, f2)
         return False
 
 def swap_dict_entries(d, key1, key2):
+    """Function that swaps two given dictionary keys"""
     if key1 in d and key2 in d:
         # Use a temporary variable to hold one of the values
         temp = d[key1]
@@ -57,30 +62,35 @@ def swap_dict_entries(d, key1, key2):
         print(f"Error: Both {key1} and {key2} must exist in the dictionary")
         return None
 
-def update_name_file(file1, file2):
-    if not os.path.isfile(name_file):
-        print(f"Error: {name_file} does not exist.")
+def update_name_file(f1, f2):
+    """Function updating NAME.json according to swap operation."""
+    if not os.path.isfile(NAME_FILE):
+        print(f"Error: {NAME_FILE} does not exist.")
         return False
 
     try:
-        with open(name_file, 'r') as file:
+        with open(NAME_FILE, 'r', encoding="utf-8") as file:
             data = json.load(file)
-            
-        updated_tracks = swap_dict_entries(data['tracks'], os.path.splitext(file1)[0], os.path.splitext(file2)[0])
+
+        updated_tracks = swap_dict_entries(data['tracks'],
+                                            os.path.splitext(f1)[0],
+                                            os.path.splitext(f2)[0])
         if updated_tracks is not None:
             data['tracks'] = updated_tracks
 
             # Write the updated JSON back to the file
-            with open(name_file, 'w') as file:
+            with open(NAME_FILE, 'w', encoding="utf-8") as file:
                 json.dump(data, file, indent=4)  # Use data, not name_file
-                
-            print(f"Updated {name_file} with swapped track names.")
+            print(f"Updated {NAME_FILE} with swapped track names.")
             return True
         else:
             return False
-    
-    except Exception as e:
-        print(f"Error occurred during JSON update: {e}")
+    except FileNotFoundError as e:
+        print(f"File not found error: {e}")
+        return False
+
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding error occurred: {e}")
         return False
 
 if __name__ == "__main__":

@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""
+Module Name: create.py
+
+This module provides functions for performing audio file creation using FFmpeg.
+
+Author: Charlie Perrone
+
+Date: 2024
+"""
 
 import os
 import shutil
@@ -6,7 +15,24 @@ import sys
 import subprocess
 import json
 
+def open_file(file, mode):
+    """Wraps OS file method"""
+    return open(file, mode, encoding='utf-8')
+
 def clear_directory(dir_path):
+    """
+    Clear all contents of a specified directory.
+
+    This function removes all files, links, and subdirectories within the specified 
+    directory. If the directory exists, it prints a message indicating the directory 
+    being cleared.
+
+    Parameters:
+    dir_path (str): The path to the directory to be cleared.
+
+    Returns:
+    None
+    """
     if os.path.exists(dir_path):
         print(f"Clearing contents of directory: {dir_path}")
         for filename in os.listdir(dir_path):
@@ -17,17 +43,99 @@ def clear_directory(dir_path):
                 shutil.rmtree(file_path)
 
 def create_silent_files(original_file, output_dir, count, start_index):
-    duration = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', original_file]).strip())
+    """
+    Create silent audio files based on the duration of an original file.
+
+    This function generates a specified number of silent audio files with the same 
+    duration as the original audio file. The silent files are named sequentially 
+    starting from the provided start index and saved in the specified output directory.
+
+    Parameters:
+    original_file (str): The path to the original audio file to determine the duration.
+    output_dir (str): The directory where the silent audio files will be saved.
+    count (int): The number of silent audio files to create.
+    start_index (int): The starting index for naming the silent audio files.
+
+    Returns:
+    None
+    """
+    duration = float(subprocess.check_output([
+        'ffprobe',
+        '-v',
+        'error',
+        '-show_entries',
+        'format=duration',
+        '-of',
+        'default=noprint_wrappers=1:nokey=1',
+        original_file]).strip())
     for i in range(1, count + 1):
         output_file = os.path.join(output_dir, f'TRACK{start_index + i}.wav')
-        subprocess.run(['ffmpeg', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=mono', '-t', str(duration), output_file])
+        subprocess.run([
+            'ffmpeg',
+            '-f', 
+            'lavfi',
+            '-i', 
+            'anullsrc=r=44100:cl=mono',
+            '-t', 
+            str(duration),
+            output_file],
+            check=False)
 
 def create_silent_stereo_file(original_file, output_dir):
-    duration = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', original_file]).strip())
-    output_file = os.path.join(output_dir, 'TRACKM.wav')
-    subprocess.run(['ffmpeg', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-t', str(duration), output_file])
+    """
+    Create a silent stereo audio file with the same duration as the original file.
 
-def main(input_dir, output_dir, song_name):
+    This function generates a silent stereo audio file with the same duration as 
+    the specified original audio file. The silent file is saved in the specified 
+    output directory with the name 'TRACKM.wav'.
+
+    Parameters:
+    original_file (str): The path to the original audio file to determine the duration.
+    output_dir (str): The directory where the silent stereo audio file will be saved.
+
+    Returns:
+    None
+    """
+    duration = float(subprocess.check_output([
+        'ffprobe',
+        '-v', 
+        'error',
+        '-show_entries',
+        'format=duration',
+        '-of',
+        'default=noprint_wrappers=1:nokey=1', 
+        original_file])
+        .strip())
+    output_file = os.path.join(output_dir, 'TRACKM.wav')
+    subprocess.run([
+        'ffmpeg',
+        '-f', 
+        'lavfi', 
+        '-i', 
+        'anullsrc=r=44100:cl=stereo', 
+        '-t',
+        str(duration),
+        output_file],
+        check=False)
+
+def main(input_dir, output_dir, s_name):
+    """
+    Main function to process WAV files and create a silent audio file, tempo file, and metadata 
+    file.
+
+    This function checks the validity of the input directory, clears and prepares the output 
+    directory, processes WAV files from the input directory to create silent audio files, 
+    generates a tempo text file, and creates a JSON metadata file with track information 
+    and the specified song name.
+
+    Parameters:
+    input_dir (str): The directory containing the input WAV files.
+    output_dir (str): The directory where the processed files will be saved.
+    s_name (str): The name of the song to be included in the metadata.
+
+    Returns:
+    None
+    """
     if not os.path.isdir(input_dir):
         print(f"Input directory '{input_dir}' does not exist")
         sys.exit(1)
@@ -66,12 +174,12 @@ def main(input_dir, output_dir, song_name):
 
     for input_file in wav_files:
         output_file = os.path.join(output_dir, f'TRACK{track_counter}.wav')
-        subprocess.run(['ffmpeg', '-i', input_file, '-ac', '1', output_file])
+        subprocess.run(['ffmpeg', '-i', input_file, '-ac', '1', output_file], check=True)
         file_tracker[f'TRACK{track_counter}']=os.path.basename(input_file)
         track_counter += 1
 
     tempo_file = os.path.join(output_dir, 'TEMPO.txt')
-    with open(tempo_file, 'w') as f:
+    with open_file(tempo_file, 'w') as f:
         f.write("""Record:
         Tempo= 138.2011 bpm (Min 59 to max 240)
         QUANTISE= Off (Off or On)
@@ -84,10 +192,10 @@ def main(input_dir, output_dir, song_name):
         """)
 
     name_file = os.path.join(output_dir, 'NAME.json')
-    with open(name_file, 'w') as f:
+    with open_file(name_file, 'w') as f:
         json.dump({
             "tracks": file_tracker,
-            "song_name": song_name
+            "song_name": s_name
         }, f, indent=4)
 
     print(f"TEMPO.txt created: {tempo_file}")
