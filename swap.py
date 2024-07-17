@@ -58,9 +58,9 @@ def swap_dict_entries(d, key1, key2):
         d[key2] = temp
 
         return d
-    else:
-        print(f"Error: Both {key1} and {key2} must exist in the dictionary")
-        return None
+
+    print(f"Error: Both {key1} and {key2} must exist in the dictionary")
+    return None
 
 def update_name_file(f1, f2):
     """Function updating NAME.json according to swap operation."""
@@ -83,8 +83,7 @@ def update_name_file(f1, f2):
                 json.dump(data, file, indent=4)  # Use data, not name_file
             print(f"Updated {NAME_FILE} with swapped track names.")
             return True
-        else:
-            return False
+        return False
     except FileNotFoundError as e:
         print(f"File not found error: {e}")
         return False

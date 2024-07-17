@@ -61,10 +61,11 @@ def traverse(func, data):
                 # Load json data
                 json_data = json.loads(folder_name)
                 # execute function and append any returned data to the result
-                result.append(func(json_data, folder_path, data))
-    # return function data
-    if len(result) != 0:
-        return result
+                func_data = func(json_data, folder_path, data)
+                if len(func_data) != 0:
+                    result.append(func_data)
+
+    return result
 
 # Loop through each folder in the parent directory
 def create_song_array(data, _, s):
