@@ -62,8 +62,8 @@ def traverse(func, data):
                 json_data = json.loads(folder_name)
                 # execute function and append any returned data to the result
                 func_data = func(json_data, folder_path, data)
-                if len(func_data) != 0:
-                    result.append(func_data)
+                # append to result list
+                result.append(func_data)
 
     return result
 
@@ -139,7 +139,7 @@ def render_tracks(data, folder_path, desired_song_name):
 
         # loop through all tracks and display
         for track in tracks:
-            track_names.append(track['name'])
+            track_names.append(tracks[track])
 
 
         # format array into string
