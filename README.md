@@ -2,25 +2,25 @@
 
 The Electro Harmonix 45000 looper is a fabulous multitrack looper which allows a musician to record sounds into one of 4 tracks and mix them together. As a live looper, it works quite seamlessly for a user. One dimension of its use that I want to explore is as a 4 track playback device. I want to load the 45000 with stems and play them back for live performance, taking advantage of its performance functions, memory and immediacy.
 
-To do this requires alot of tedious folder management and precise operations. To create a loop entry, there must be exactly 5 files present and they must be exactly the same length. Each file should be mono 16bit wav, except for the fifth which should be stereo 16 bit wav. The naming must also follow the pattern TRACK1...TRACK4, with the fifth stereo file being named TRACKM. There is also very little information available to a user regarding what is contained in a loop. Once they are created they are a bit of a black box. I would like to streamline the process of creating files in this format by making a set of tools that can spin up a properly formatted loop entry and will allow the user to perform visualization and management on existing entries. 
+To do this requires alot of tedious folder management and precise operations. To create a loop entry, there must be exactly 5 files present and they must be exactly the same length. Each file should be mono 16bit wav, except for the fifth which should be stereo 16 bit wav. The naming must also follow the pattern TRACK1...TRACK4, with the fifth stereo file being named TRACKM. There is also very little information available to a user regarding what is contained in a loop. Once they are created they are a bit of a black box. I would like to streamline the process of creating files in this format by making a set of tools that can spin up a properly formatted loop entry and will allow the user to perform visualization and management on existing entries.
 
 #### Create
 
 Creates a new looper directory with proper file formatting and directory structure. It also creates a file called NAME.json which gives information about the loop like the song name and the original filenames which gives more information about what is contained in each track.
 
-```create.py input_directory output_directory song_name```
+`create.py input_directory output_directory song_name`
 
 where create.py takes three arguments:
 
-- ```input_directory```  - specifies the files which will be used to create the loop directory
-- ```output_directory``` - specifies where the loop directory should be created
-- ```song_name```        - specifies what song this loop is associated with
+- `input_directory` - specifies the files which will be used to create the loop directory
+- `output_directory` - specifies where the loop directory should be created
+- `song_name` - specifies what song this loop is associated with
 
 #### Visualize
 
 Visualizes the entire looper directory and displays the relevant song and track structure for each loop
 
-```visualize.py```
+`visualize.py`
 
 currently hardcoded to my personal drive, but could be configured to operate anywhere. Produces results in the following format:
 
@@ -30,7 +30,7 @@ currently hardcoded to my personal drive, but could be configured to operate any
 
 Swaps the names of the two given files. Also reflects this change in the NAME.json file.
 
-```swap.py file1 file2```
+`swap.py file1 file2`
 
 This function is useful for reorganizing a loop entry. Say you want all of your drums on TRACK1. This function can help you do that.
 
